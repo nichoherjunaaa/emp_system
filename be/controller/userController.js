@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 const { validateRegisterInput, validateLoginInput } = require('../utils/userValidator');
 
+// Register User
 const registerUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
 
@@ -34,6 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 });
 
+// Login User
 const loginUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
 
@@ -64,13 +66,14 @@ const loginUser = asyncHandler(async (req, res) => {
         { expiresIn: '7d' }
     );
 
-    await user.update({ refreshToken: refreshToken });  // Pastikan nama kolom sesuai
+    await user.update({ refreshToken: refreshToken });
 
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: 'Lax', // Ubah ke 'Lax' jika menggunakan HTTP
+        secure: false, // Set true jika menggunakan HTTPS
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 hari
+        path: '/',
     });
 
     res.json({
@@ -82,13 +85,15 @@ const loginUser = asyncHandler(async (req, res) => {
     });
 });
 
-const refreshToken = asyncHandler(async (req, res) => {
+// Refresh Access Token
+const refreshTokenUser = asyncHandler(async (req, res) => {
+    // console.log(req.cookies);
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
         return res.status(401).json({ message: 'No refresh token provided' });
     }
 
-    const user = await User.findOne({ where: { refresh_token: refreshToken } }); // Sesuaikan nama kolom
+    const user = await User.findOne({ where: { refreshToken } });
     if (!user) {
         return res.status(403).json({ message: 'Invalid refresh token' });
     }
@@ -104,34 +109,37 @@ const refreshToken = asyncHandler(async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.json({ token: accessToken });
+        res.json({ 
+            message: 'Refresh token successful',
+            token: accessToken,
+        });
     });
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-    console.log(req.cookies);
-    const { refreshToken } = req.cookies;  // Ambil refreshToken dari cookie
-
+    // console.log(req.cookies);
+    const { refreshToken } = req.cookies;
     if (!refreshToken) {
         return res.status(400).json({ message: 'No refresh token provided' });
     }
 
-    // Cari user berdasarkan refresh_token di database
-    const user = await User.findOne({ where: { refreshToken: refreshToken } });  // Sesuaikan nama kolom
-    if (!user) {
-        res.clearCookie('refreshToken');  // Hapus cookie jika user tidak ditemukan
-        return res.status(400).json({ message: 'No matching user found for refresh token' });
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        sameSite: 'Lax', // Harus sama dengan saat cookie di-set
+        secure: false, // Harus sama dengan saat cookie di-set
+        path: '/', // Harus sama dengan saat cookie di-set
+    });
+
+    const user = await User.findOne({ where: { refreshToken: refreshToken } });
+    if (user) {
+        await user.update({ refreshToken: null });
     }
-
-    // Update user dengan null-kan refresh_token
-    await user.update({ refreshToken: null });
-
-    // Hapus cookie refreshToken dari browser
-    res.clearCookie('refreshToken');
 
     res.status(200).json({ message: 'Logged out successfully' });
 });
 
+
+// Get User By ID
 const getUserById = asyncHandler(async (req, res) => {
     const user = await User.findByPk(req.params.id);
     if (!user) {
@@ -140,4 +148,4 @@ const getUserById = asyncHandler(async (req, res) => {
     res.json(user);
 });
 
-module.exports = { registerUser, loginUser, getUserById, refreshToken, logoutUser };
+module.exports = { registerUser, loginUser, getUserById, refreshTokenUser, logoutUser };

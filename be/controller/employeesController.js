@@ -123,4 +123,21 @@ const deleteEmployee = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { getDataById, insertEmployee, updateEmployee, deleteEmployee };
+const getDataEmployees = asyncHandler(async (req, res) => {
+    // console.log(req.params.id);
+    try {
+        const employees = await Employees.findAll();
+        res.status(200).json({
+            status: 'success',
+            data: employees
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error, failed to fetch employee data',
+            error: error.message
+        });
+    }
+});
+
+module.exports = { getDataById, insertEmployee, updateEmployee, deleteEmployee, getDataEmployees };
