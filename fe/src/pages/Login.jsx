@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api/api';
 import { useAuth } from '../context/AuthContext';
@@ -10,21 +9,25 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const { login } = useAuth();
+    const { user, login } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/home'); // Arahkan ke halaman home jika pengguna sudah login
+        }
+    }, [user, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!username || !password) {
             setError('Username dan Password tidak boleh kosong!');
-            setSuccess(false);
             return;
         }
 
         if (password.length < 6) {
             setError('Password harus memiliki minimal 6 karakter!');
-            setSuccess(false);
             return;
         }
 
@@ -36,24 +39,22 @@ const Login = () => {
         };
 
         try {
-            const response = await API.post('http://localhost:3001/api/auth/login', payload, {
+            const response = await API.post('/api/auth/login', payload, {
                 withCredentials: true,
             });
-            // console.log('success', response);
             login({
                 username: response.data.username,
                 token: response.data.token,
+                role: response.data.role,
             });
             setSuccess(true);
             setUsername('');
             setPassword('');
             setError('');
-
             navigate('/home');
         } catch (error) {
             console.error(error);
             setError(error.response?.data?.message || 'Login gagal, coba lagi!');
-            setSuccess(false);
         } finally {
             setLoading(false);
         }

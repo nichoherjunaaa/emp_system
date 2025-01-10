@@ -5,7 +5,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        colors: {
+          'primary': '#1e40af', 
+          'secondary': '#4b5563', 
+          'accent': '#cbd5e1', 
+          'neutral': '#FFFFFF', // Putih
+
+          "hover": '#3B82F6',
+        },
+      },
+    },
   },
   plugins: [
     require('daisyui'),

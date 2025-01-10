@@ -1,16 +1,20 @@
 import { createContext, useContext, useState } from 'react';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     const login = (userData) => {
-        setUser(userData); 
+        setUser({
+            username: userData.username,
+            token: userData.token, // Simpan token
+            role: userData.role,
+        });
     };
 
     const logout = () => {
-        setUser(null); 
+        setUser(null); // Reset state user
     };
 
     return (

@@ -1,37 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import API from '../api/api';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [newToken, setNewToken] = useState('');
+    const { user, logout } = useAuth();
 
     const handleRefresh = async () => {
         try {
-            const response = await API.get('http://localhost:3001/api/auth/refresh', {
+            const response = await API.get('/api/auth/refresh', {
                 withCredentials: true,
             });
             setNewToken(response.data.token);
-            console.log('refresh', response.data.token);
             setMessage('Token refreshed successfully');
         } catch (error) {
             setMessage(error.response?.data?.message || 'An error occurred');
-            navigate('/');
+            logout(); // Panggil fungsi logout dari AuthContext
+            navigate('/login'); // Arahkan ke halaman login
         }
     };
 
     const handleLogout = async () => {
         try {
-            const response = await API.post(
-                'http://localhost:3001/api/auth/logout',
-                {},
-                {
-                    withCredentials: true,
-                }
-            );
-            console.log(response.data.message);
+            await API.post('/api/auth/logout', {}, { withCredentials: true });
+            logout();
             navigate('/');
         } catch (error) {
             console.error('Logout failed:', error);
@@ -40,19 +35,19 @@ const Navbar = () => {
     };
 
     useEffect(() => {
-        handleRefresh();
+        handleRefresh(); // Refresh token saat komponen pertama kali dimuat
     }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            handleRefresh();
+            handleRefresh(); // Refresh token setiap 15 menit
         }, 900000);
 
-        return () => clearInterval(interval); 
+        return () => clearInterval(interval); // Hentikan interval saat komponen di-unmount
     }, []);
 
     return (
-        <div className="navbar">
+        <div className="navbar fixed bg-colors-primary p-3 text-colors-accent">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -89,7 +84,7 @@ const Navbar = () => {
                         </li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Employee System</a>
+                <a className="btn btn-ghost text-xl">Hospital System</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -108,9 +103,15 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <button onClick={handleLogout} className="btn">
-                    Logout
-                </button>
+                {user ? (
+                    <button onClick={handleLogout} className="btn bg-red-600">
+                        Logout
+                    </button>
+                ) : (
+                    <Link to="/" className="btn bg-green-600">
+                        Login
+                    </Link>
+                )}
             </div>
         </div>
     );
