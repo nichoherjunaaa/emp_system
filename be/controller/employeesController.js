@@ -72,11 +72,7 @@ const updateEmployee = asyncHandler(async (req, res) => {
 });
 
 const getDataById = asyncHandler(async (req, res) => {
-    const { refreshToken } = req.cookies;
-    if (!refreshToken) {
-        return res.status(401).json({ message: 'No refresh token provided' });
-    }
-    console.log(refreshToken);
+    console.log(req.cookies);
     try {
         const employee = await Employees.findOne({
             where: { user_nip: req.params.id }
