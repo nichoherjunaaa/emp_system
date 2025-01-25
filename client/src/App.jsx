@@ -6,27 +6,36 @@ import ErrorPage from './pages/ErrorPage'
 import './App.css'
 import BiodataPage from './pages/BiodataPage'
 import PresensiPage from './pages/PresensiPage'
+import LoginPage from './pages/LoginPage'
+import { store } from './store'
+
+import { action as LoginAction } from './pages/LoginPage'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/system',
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <HomePage/>,
+        element: <HomePage />,
       },
       {
         path: 'biodata',
-        element: <BiodataPage/>,
+        element: <BiodataPage />,
       },
       {
         path: 'presensi',
-        element: <PresensiPage/>,
+        element: <PresensiPage />,
       }
     ],
   },
+  {
+    path: '/',
+    element: <LoginPage />,
+    action: LoginAction(store)
+  }
 ])
 
 const App = () => {
