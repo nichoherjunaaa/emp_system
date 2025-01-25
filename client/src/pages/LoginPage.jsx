@@ -9,10 +9,10 @@ import { toast } from 'react-toastify'
 export const action = (store) => async ({ request }) => {
     const formInputData = await request.formData()
     const data = Object.fromEntries(formInputData)
-    console.log(data);
+    // console.log(data);
     try {
         const response = await API.post('/auth/login', data);
-        console.log(response);
+        // console.log(response);
         store.dispatch(loginUser(response.data));
         toast.success('Login Berhasil')
         return redirect('/system');

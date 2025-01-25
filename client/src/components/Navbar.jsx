@@ -1,10 +1,27 @@
 import React from 'react'
 import NavList from './NavList'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { FaBarsStaggered } from 'react-icons/fa6'
-
+import { useSelector, useDispatch } from 'react-redux'
+import API from '../api'
+import { logoutUser } from '../features/userSlice'
 
 export const Navbar = () => {
+    const user = useSelector(state => state.userState.user)
+    // console.log(user);
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const handleLogout = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await API.get('/auth/logout')
+            dispatch(logoutUser())
+            navigate('/')
+        } catch (error) {
+            dispatch(logoutUser())
+            navigate('/')
+        }
+    }
     return (
         <nav className="bg-base-200">
             <div className="navbar mx-auto max-w-7xl lg:px-10 px-2">
@@ -32,18 +49,18 @@ export const Navbar = () => {
                     </div>
                 </div>
                 <div className="navbar-end flex md:gap-4">
-                    {/* {!user && ( */}
+                    {!user && (
                         <NavLink className="btn btn-ghost bg-primary px-5" to='/login'>Login</NavLink>
-                    {/* )} */}
+                    )}
                     <NavLink to='/cart' className="btn btn-ghost btn-circle btn-md">
                         {/* <div className="indicator">
                             <BsCart3 />
                             <span className="badge badge-primary badge-sm indicator-item">{countCart}</span>
                         </div> */}
                     </NavLink>
-                    {/* {user && ( */}
-                        <button className="btn btn-error btn-outline btn-md">Logout</button>
-                    {/* )} */}
+                    {user && (
+                        <button className="btn btn-error btn-outline btn-md" onClick={handleLogout}>Logout</button>
+                    )}
                 </div>
             </div>
         </nav >
