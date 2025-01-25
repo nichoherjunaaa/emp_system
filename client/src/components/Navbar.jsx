@@ -23,7 +23,7 @@ export const Navbar = () => {
         }
     }
     return (
-        <nav className="bg-base-200">
+        <nav className="bg-base-300">
             <div className="navbar mx-auto max-w-7xl lg:px-10 px-2">
                 <div className="navbar-start">
                     {/* <div className="hidden lg:flex text-md items-center">
