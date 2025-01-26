@@ -1,16 +1,15 @@
 import React from 'react'
+import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import ErrorPage from './pages/ErrorPage'
-import './App.css'
 import BiodataPage from './pages/BiodataPage'
 import PresensiPage from './pages/PresensiPage'
 import LoginPage from './pages/LoginPage'
 import { store } from './store'
 
 import { action as LoginAction } from './pages/LoginPage'
-
 const router = createBrowserRouter([
   {
     path: '/system',

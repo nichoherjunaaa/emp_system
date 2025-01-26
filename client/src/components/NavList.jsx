@@ -3,10 +3,11 @@ import { NavLink } from 'react-router-dom'
 import PresensiPage from './../pages/PresensiPage';
 
 const links = [
-    { id: 1, url: '', text: "home" },
+    { id: 1, url: '', text: "beranda" },
     { id: 2, url: 'biodata', text: "biodata" },
     { id: 3, url: 'presensi', text: "presensi" },
-    // { id: 4, url: 'checkout', text: "checkout" },
+    { id: 4, url: 'informasi', text: "informasi" },
+    { id: 5, url: 'tentang', text: "tentang" },
 
 ]
 const NavList = () => {
