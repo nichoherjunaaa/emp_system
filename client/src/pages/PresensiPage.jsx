@@ -1,10 +1,28 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import API from './../api';
+import { toast } from 'react-toastify';
 const PresensiPage = () => {
-    const handleSubmit = (e) => {
+    const [choice, setChoice] = useState('');
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('ok');
-        
+        const options = ['hadir', 'izin', 'tanpa_keterangan', 'terlambat']
+        if (!options.includes(choice)) {
+            toast.error('Pilihan salah satu opsi');
+            return;
+        }
+        try {
+            const transformedChoice = choice.replace('_', ' ');
+
+            const response = await API.post('/attendance', {
+                status: transformedChoice, 
+            });
+            // console.log(response.data);
+            toast.success('Presensi berhasil!')
+        } catch (error) {
+            const errMsg = error?.response?.data?.message;
+            // console.log(errMsg);
+            toast.error(errMsg || 'Terjadi kesalahan');
+        }
     }
     return (
         <div className="flex justify-center items-center bg-base-300 w-full">
@@ -18,6 +36,9 @@ const PresensiPage = () => {
                             <input
                                 type="radio"
                                 name="presensi"
+                                value="hadir"
+                                checked={choice === 'hadir'}
+                                onChange={(e) => setChoice(e.target.value)}
                                 className="radio checked:bg-blue-500"
                             />
                         </label>
@@ -29,6 +50,9 @@ const PresensiPage = () => {
                             <input
                                 type="radio"
                                 name="presensi"
+                                value="izin"
+                                checked={choice === 'izin'}
+                                onChange={(e) => setChoice(e.target.value)}
                                 className="radio checked:bg-green-500"
                             />
                         </label>
@@ -40,6 +64,9 @@ const PresensiPage = () => {
                             <input
                                 type="radio"
                                 name="presensi"
+                                value="terlambat"
+                                checked={choice === 'terlambat'}
+                                onChange={(e) => setChoice(e.target.value)}
                                 className="radio checked:bg-yellow-500"
                             />
                         </label>
@@ -51,6 +78,9 @@ const PresensiPage = () => {
                             <input
                                 type="radio"
                                 name="presensi"
+                                value="tanpa_keterangan"
+                                checked={choice === 'tanpa_keterangan'}
+                                onChange={(e) => setChoice(e.target.value)}
                                 className="radio checked:bg-red-500"
                             />
                         </label>

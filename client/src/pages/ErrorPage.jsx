@@ -10,7 +10,7 @@ const ErrorPage = () => {
                     <h1 className="text-9xl font-bold text-primary">404</h1>
                     <p className="text-lg leading-7 mt-6">Halaman yang Anda cari tidak ditemukan.</p>
                     <div className="mt-10">
-                        <Link to="/" className="btn btn-primary">Kembali ke Beranda</Link>
+                        <Link to="/system" className="btn btn-primary">Kembali ke Beranda</Link>
                     </div>
                 </div>
             </main>
