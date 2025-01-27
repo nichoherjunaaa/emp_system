@@ -10,6 +10,9 @@ import LoginPage from './pages/LoginPage'
 import { store } from './store'
 
 import { action as LoginAction } from './pages/LoginPage'
+import InformasiPage from './pages/InformasiPage'
+import AboutPage from './pages/AboutPage'
+import KaryawanPage from './pages/KaryawanPage'
 const router = createBrowserRouter([
   {
     path: '/system',
@@ -27,13 +30,25 @@ const router = createBrowserRouter([
       {
         path: 'presensi',
         element: <PresensiPage />,
+      },
+      {
+        path: 'informasi',
+        element: <InformasiPage />,
+      },
+      {
+        path: 'tentang',
+        element: <AboutPage />,
+      },
+      {
+        path: 'daftar',
+        element: <KaryawanPage />
       }
     ],
   },
   {
     path: '/',
     element: <LoginPage />,
-    errorElement : <ErrorPage/>,
+    errorElement: <ErrorPage />,
     action: LoginAction(store)
   }
 ])

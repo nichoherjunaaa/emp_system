@@ -28,7 +28,7 @@ const FormEdit = ({ data, onCancel }) => {
             const response = await API.put('/auth', formData);
             console.log(response);
             toast.success('Data berhasil diperbarui');
-            onCancel(); // Tutup formulir setelah sukses
+            onCancel();  
         } catch (error) {
             const errMsg = error?.response?.data?.message;
             toast.error(errMsg);
