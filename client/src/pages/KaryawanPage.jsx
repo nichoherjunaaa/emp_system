@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import API from './../api';
 const KaryawanPage = () => {
+    const [result, setResult] = useState([])
     const getData = async () => {
         try {
             const { data } = await API.get('/auth/all-users')
+            setResult(data.data)
             console.log(data.data);
         } catch (error) {
             console.log(error);
@@ -31,7 +33,7 @@ const KaryawanPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                         <tr>
                             <th>1</th>
                             <td>Cy Ganderton</td>
