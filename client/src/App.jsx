@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
       {
-        path: 'daftar',
+        path: 'karyawan',
         element: <KaryawanPage />
       }
     ],
