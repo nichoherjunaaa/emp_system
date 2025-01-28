@@ -27,14 +27,14 @@ const KaryawanPage = () => {
         <div className="flex w-full justify-center bg-base-300 p-4">
             <div className="w-full">
                 <div className="flex justify-between mb-4">
-                    <div className="flex gap-4 w-full justify-start">
+                    <div className="flex gap-4 w-full justify-start mr-10">
                         {/* buatkan form input disini yang panjangnya bisa diatur*/}
-                        <input type="text" placeholder="Cari Nama Lengkap" className="input w-full" />
+                        <input type="text" placeholder="Cari Nama Karyawan" className="input w-full" />
                         <button className="btn btn-primary w-20">Cari</button>
                         <button className="btn btn-primary btn-md w-20">Filter</button>
                     </div>
                     <div className="flex justify-end mx-5">
-                        <button className="btn btn-primary btn-md w-30">Tambah Data</button>
+                        <button className="btn btn-primary btn-md w-30 ml-10">Tambah Data</button>
                     </div>
                 </div>
                 <table className="table table-zebra w-full">

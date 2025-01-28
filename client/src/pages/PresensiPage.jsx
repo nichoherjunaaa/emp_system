@@ -14,7 +14,7 @@ const PresensiPage = () => {
             const transformedChoice = choice.replace('_', ' ');
 
             const response = await API.post('/attendance', {
-                status: transformedChoice, 
+                status: transformedChoice,
             });
             // console.log(response.data);
             toast.success('Presensi berhasil!')
@@ -24,9 +24,11 @@ const PresensiPage = () => {
             toast.error(errMsg || 'Terjadi kesalahan');
         }
     }
+
     return (
-        <div className="flex justify-center items-center bg-base-300 w-full">
-            <form className="bg-white p-8 rounded-md shadow-md w-full max-w-sm" onSubmit={handleSubmit}>
+        <div className="flex justify-around items-center bg-base-300 w-full">
+            {/* Form Presensi */}
+            <form className="bg-white p-8 rounded-md shadow-md basis-full max-w-md" onSubmit={handleSubmit}>
                 <h2 className="text-2xl font-bold text-center mb-6">Presensi Hari ini</h2>
                 <div className="flex gap-4 flex-col justify-center mt-4">
                     {/* Hadir */}
@@ -93,7 +95,35 @@ const PresensiPage = () => {
                     Submit
                 </button>
             </form>
+
+            {/* Div Informasi */}
+            <div className="flex flex-col rounded-md shadow-md basis-full max-w-md bg-red-700">
+                <div className="flex items-center justify-center p-4">
+                    <span className="text-white font-bold">Halo</span>
+                </div>
+                <div className="bg-accent overflow-x-auto">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Job</th>
+                                <th>Favorite Color</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>1</th>
+                                <td>Cy Ganderton</td>
+                                <td>Quality Control Specialist</td>
+                                <td>Blue</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
     )
 }
 
