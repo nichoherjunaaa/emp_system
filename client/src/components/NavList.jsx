@@ -1,24 +1,9 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import PresensiPage from './../pages/PresensiPage';
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { redirect } from 'react-router-dom'
-import { useLoaderData } from 'react-router-dom'
-
-
-export const loader = (store) => async () => {
-    const user = store.getState().userState.user;
-    if (!user) {
-        return redirect('/');
-    }
-    const currentUser = user.data
-    const isAdmin = currentUser.role === 'admin';
-    // console.log(isAdmin);
-    return { isAdmin };
-};
 
 const NavList = () => {
-    const { isAdmin } = useLoaderData();
+    const user = useSelector((state) => state.userState.user);
 
     const links = [
         { id: 1, url: '', text: 'beranda' },
@@ -28,25 +13,17 @@ const NavList = () => {
         { id: 5, url: 'tentang', text: 'tentang' },
     ];
 
-    if (isAdmin) {
-        links.push({ id: 6, url: 'daftar', text: 'daftar karyawan' });
-    }
     return (
-        <>
-            <ul className="flex flex-col gap-2 md:flex-row md:gap-2">
-                {links.map((link) => {
-                    const { id, url, text } = link
-                    return (
-                        <li key={id}>
-                            <NavLink className="capitalize" to={url}>
-                                {text}
-                            </NavLink>
-                        </li>
-                    )
-                })}
-            </ul>
-        </>
-    )
-}
+        <ul className="flex flex-col gap-2 md:flex-row md:gap-2">
+            {links.map((link) => (
+                <li key={link.id}>
+                    <NavLink className="capitalize" to={link.url}>
+                        {link.text}
+                    </NavLink>
+                </li>
+            ))}
+        </ul>
+    );
+};
 
-export default NavList
+export default NavList;

@@ -20,14 +20,11 @@ import { store } from './store'
 // action
 import { action as LoginAction } from './pages/LoginPage'
 
-// loader
-import { loader as navLoader } from './components/NavList'
 
 const router = createBrowserRouter([
   {
     path: '/system',
     element: <MainLayout />,
-    loader: navLoader(store),
     errorElement: <ErrorPage />,
     children: [
       {
