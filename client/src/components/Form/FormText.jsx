@@ -1,10 +1,14 @@
 import React from 'react'
 
-const FormText = () => {
+const FormText = ({label, name, type, defaultValue}) => {
     return (
-        <div>
-            <textarea className="textarea" placeholder="Bio"></textarea>
-        </div>
+        <label className="form-control flex flex-col">
+            <label className="label">
+                <span className="label-text capitalize">{label}</span>
+            </label>
+            <textarea className="textarea mt-2 w-full" type={type} defaultValue={defaultValue} name={name}/>
+        </label >
+        
     )
 }
 
