@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import API from './../api';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 const PresensiPage = () => {
     const [choice, setChoice] = useState('');
+    const [result, setResult] = useState(null);
+    const [isRecord, setRecord] = useState(false)
+    const user = useSelector((state) => state.userState.user)
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         const options = ['hadir', 'izin', 'tanpa_keterangan', 'terlambat']
         if (!options.includes(choice)) {
@@ -18,6 +23,8 @@ const PresensiPage = () => {
             });
             // console.log(response.data);
             toast.success('Presensi berhasil!')
+            setChoice('');
+            getDataPresensi();
         } catch (error) {
             const errMsg = error?.response?.data?.message;
             // console.log(errMsg);
@@ -25,104 +32,111 @@ const PresensiPage = () => {
         }
     }
 
+    const getDataPresensi = async () => {
+        try {
+            const { data } = await API.get('/attendance')
+            setResult(data.data);
+            const today = new Date().toISOString().split('T')[0];
+
+            const hasRecordToday = data.data.some((item) => {
+                const itemDate = new Date(item.tanggal).toISOString().split('T')[0];
+                return itemDate === today;
+            });
+            // console.log(hasRecordToday);
+            setRecord(hasRecordToday);
+        } catch (error) {
+            const errMsg = error?.response?.data?.message;
+            // console.log(errMsg);
+            toast.error(errMsg || 'Terjadi kesalahan');
+        }
+    }
+
+    const formatDateTime = (dateTimeString) => {
+        const date = new Date(dateTimeString);
+        const tanggalFormat = date.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+        const waktuFormat = date.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+        return { tanggalFormat, waktuFormat };
+    };
+
+    useEffect(() => {
+        getDataPresensi();
+    }, [])
+
+
+
     return (
-        <div className="flex justify-around items-center bg-base-300 w-full">
-            {/* Form Presensi */}
-            <form className="bg-white p-8 rounded-md shadow-md basis-full max-w-md" onSubmit={handleSubmit}>
-                <h2 className="text-2xl font-bold text-center mb-6">Presensi Hari ini</h2>
-                <div className="flex gap-4 flex-col justify-center mt-4">
-                    {/* Hadir */}
-                    <div className="form-control">
+        <div className="grid grid-cols-2 gap-8 bg-base-300 w-full p-8">
+        {/* div1 */}
+        <form className="bg-white p-8 rounded-md shadow-md flex flex-col h-full" onSubmit={handleSubmit}>
+            <h2 className="text-2xl font-bold text-center mb-6">Presensi Hari ini</h2>
+            <div className="flex gap-4 flex-col justify-center flex-grow">
+                {['hadir', 'izin', 'terlambat', 'tanpa_keterangan'].map((status, index) => (
+                    <div className="form-control" key={index}>
                         <label className="label cursor-pointer flex justify-between items-center">
-                            <span className="label-text text-lg font-medium">Hadir</span>
+                            <span className="label-text text-lg font-medium capitalize">{status.replace('_', ' ')}</span>
                             <input
                                 type="radio"
                                 name="presensi"
-                                value="hadir"
-                                checked={choice === 'hadir'}
+                                value={status}
+                                checked={choice === status}
                                 onChange={(e) => setChoice(e.target.value)}
-                                className="radio checked:bg-blue-500"
+                                className={`radio checked:bg-${status === 'hadir' ? 'blue' : status === 'izin' ? 'green' : status === 'terlambat' ? 'yellow' : 'red'}-500`}
+                                disabled={isRecord}
                             />
                         </label>
                     </div>
-                    {/* Izin */}
-                    <div className="form-control">
-                        <label className="label cursor-pointer flex justify-between items-center">
-                            <span className="label-text text-lg font-medium">Izin</span>
-                            <input
-                                type="radio"
-                                name="presensi"
-                                value="izin"
-                                checked={choice === 'izin'}
-                                onChange={(e) => setChoice(e.target.value)}
-                                className="radio checked:bg-green-500"
-                            />
-                        </label>
-                    </div>
-                    {/* Terlambat */}
-                    <div className="form-control">
-                        <label className="label cursor-pointer flex justify-between items-center">
-                            <span className="label-text text-lg font-medium">Terlambat</span>
-                            <input
-                                type="radio"
-                                name="presensi"
-                                value="terlambat"
-                                checked={choice === 'terlambat'}
-                                onChange={(e) => setChoice(e.target.value)}
-                                className="radio checked:bg-yellow-500"
-                            />
-                        </label>
-                    </div>
-                    {/* Tanpa Keterangan */}
-                    <div className="form-control">
-                        <label className="label cursor-pointer flex justify-between items-center">
-                            <span className="label-text text-lg font-medium">Tanpa Keterangan</span>
-                            <input
-                                type="radio"
-                                name="presensi"
-                                value="tanpa_keterangan"
-                                checked={choice === 'tanpa_keterangan'}
-                                onChange={(e) => setChoice(e.target.value)}
-                                className="radio checked:bg-red-500"
-                            />
-                        </label>
-                    </div>
-                </div>
+                ))}
+            </div>
+            {!isRecord ? (
                 <button
                     type="submit"
                     className="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-all"
                 >
                     Submit
                 </button>
-            </form>
-
-            {/* Div Informasi */}
-            <div className="flex flex-col rounded-md shadow-md basis-full max-w-md bg-red-700">
-                <div className="flex items-center justify-center p-4">
-                    <span className="text-white font-bold">Halo</span>
+            ) : (
+                <div className="flex justify-center mt-7 btn btn-error w-full py-6">
+                    <span className="text-base">Anda sudah melakukan presensi hari ini.</span>
                 </div>
-                <div className="bg-accent overflow-x-auto">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Job</th>
-                                <th>Favorite Color</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Blue</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            )}
+        </form>
+        {/* div2 */}
+        <div className="bg-white rounded-md shadow-md flex flex-col h-full p-4">
+            <div className="flex items-center justify-center p-4 border-b">
+                <span className="text-pretty font-bold text-2xl">Riwayat Presensi</span>
+            </div>
+            <div className="flex-grow">
+                <table className="table w-full">
+                    <thead className="ml-4">
+                        <tr>
+                            <th>Waktu</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody className="ml-4">
+                        {result?.map((item, index) => {
+                            const { waktuFormat, tanggalFormat } = formatDateTime(item.tanggal);
+                            return (
+                                <tr key={index} className='bg-base-300'>
+                                    <td>{waktuFormat}</td>
+                                    <td>{tanggalFormat}</td>
+                                    <td className="capitalize">{item.status}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 
     )
 }
