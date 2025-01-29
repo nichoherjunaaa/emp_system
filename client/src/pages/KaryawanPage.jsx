@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API from './../api';
+import { Link } from 'react-router-dom';
 
 const KaryawanPage = () => {
     const [result, setResult] = useState([]);
@@ -14,10 +15,10 @@ const KaryawanPage = () => {
         }
     };
 
-    // const handleTambah = async (e) => { 
+    const handleTambah = async (e) => { 
     //     e.preventDefault();
     //     const response = 
-    // }
+    }
 
     useEffect(() => {
         getData();
@@ -34,7 +35,7 @@ const KaryawanPage = () => {
                         <button className="btn btn-primary btn-md w-20">Filter</button>
                     </div>
                     <div className="flex justify-end mx-5">
-                        <button className="btn btn-primary btn-md w-30 ml-10">Tambah Data</button>
+                        <Link className="btn btn-primary btn-md w-30 ml-10" to="/tambah">Tambah Data</Link>
                     </div>
                 </div>
                 <table className="table table-zebra w-full">

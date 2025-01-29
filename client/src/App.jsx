@@ -13,7 +13,7 @@ import LoginPage from './pages/LoginPage'
 import InformasiPage from './pages/InformasiPage'
 import AboutPage from './pages/AboutPage'
 import KaryawanPage from './pages/KaryawanPage'
-
+import TambahData from './pages/TambahData'
 // store
 import { store } from './store'
 
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       {
         path: 'karyawan',
         element: <KaryawanPage />
-      }
+      },
     ],
   },
   {
@@ -58,6 +58,10 @@ const router = createBrowserRouter([
     element: <LoginPage />,
     errorElement: <ErrorPage />,
     action: LoginAction(store)
+  },
+  {
+    path: '/tambah',
+    element: <TambahData/>
   }
 ])
 
