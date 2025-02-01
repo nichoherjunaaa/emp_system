@@ -18,7 +18,7 @@ const userSlice = createSlice({
             state.user = null;
             localStorage.removeItem('user');
             toast.success('Logout Berhasil')
-        }
+        },
     }
 })
 

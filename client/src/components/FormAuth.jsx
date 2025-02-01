@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form } from 'react-router-dom';
 import FormInput from './Form/FormInput';
-import FormText from './Form/FormText';
 
 const FormAuth = () => {
     return (
@@ -14,9 +13,6 @@ const FormAuth = () => {
                 </div>
                 <FormInput type="text" name="nip_karyawan" label="Username" />
                 <FormInput type="password" name="password" label="Password" />
-
-
-
                 <div className="mt-4">
                     <button type="submit" className="btn btn-primary btn-block" >
                         LOGIN

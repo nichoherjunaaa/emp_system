@@ -6,7 +6,7 @@ const FormText = ({label, name, type, defaultValue}) => {
             <label className="label">
                 <span className="label-text capitalize">{label}</span>
             </label>
-            <textarea className="textarea mt-2 w-full" type={type} defaultValue={defaultValue} name={name}/>
+            <textarea className="textarea mt-2 w-full border border-black" type={type} defaultValue={defaultValue} name={name}/>
         </label >
         
     )

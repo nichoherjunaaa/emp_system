@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API from './../api';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const KaryawanPage = () => {
     const [result, setResult] = useState([]);
@@ -15,11 +16,19 @@ const KaryawanPage = () => {
         }
     };
 
-    const handleTambah = async (e) => { 
-    //     e.preventDefault();
-    //     const response = 
-    }
-
+    const handleDelete = async (nip_karyawan) => {
+        try {
+            await API.delete(`/auth/delete/${nip_karyawan}`,)
+            setResult(result.filter((item) => item.nip_karyawan !== nip_karyawan));
+            // console.log('Data berhasil dihapus');
+            toast.success('Data berhasil dihapus');
+            getData();
+        } catch (error) {
+            // console.log(error);
+            toast.error('Gagal menghapus data');
+        }
+    };
+    
     useEffect(() => {
         getData();
     }, []);
@@ -63,7 +72,7 @@ const KaryawanPage = () => {
                                 <td>{karyawan.nomor_telepon}</td>
                                 <td className="flex justify-around">
                                     <button className="btn btn-warning btn-sm w-14">Edit</button>
-                                    <button className="btn btn-error btn-sm w-14">Delete</button>
+                                    <button className="btn btn-error btn-sm w-14" onClick={() => handleDelete(karyawan.nip_karyawan)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
