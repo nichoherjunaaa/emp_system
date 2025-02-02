@@ -18,15 +18,28 @@ const EditPage = ({ data, onCancel, isAdmin }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        console.log(formData.email);
     };
 
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Membersihkan formData agar tidak mengirim properti kosong
+        const cleanedData = Object.entries(formData).reduce((acc, [key, value]) => {
+            if (value !== "" && value !== null && value !== undefined) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {});
+    
         try {
-            await API.put('/auth', formData);
+            const response = await API.put(`/auth`, cleanedData);
+            console.log(response.data);
             toast.success('Data berhasil diperbarui');
             onCancel();
         } catch (error) {
+            console.error("Error updating data:", error);
             toast.error(error?.response?.data?.message || 'Terjadi kesalahan');
         }
     };

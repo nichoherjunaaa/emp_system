@@ -3,7 +3,7 @@ import API from '../api';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import EditPage from './EditPage';
+import FormEdit from './../components/FormEdit';
 
 const BiodataPage = () => {
     const [data, setData] = useState(null);
@@ -41,7 +41,7 @@ const BiodataPage = () => {
     return (
         <div className="flex flex-col gap-3 bg-base-300 w-7xl px-8">
             {isEditing ? (
-                <EditPage data={data} onCancel={handleCancelEdit} />
+                <FormEdit data={data} onCancel={handleCancelEdit} />
             ) : (
                 <>
                     <div className="flex justify-center items-center">
