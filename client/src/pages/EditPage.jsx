@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import API from './../api';
 import { toast } from 'react-toastify';
-import FormInput from './Form/FormInput';
+import FormInput from './../components/Form/FormInput';
+import API from './../api';
 
-const FormEdit = ({ data, onCancel, isAdmin }) => {
+const EditPage = ({ data, onCancel, isAdmin }) => {
     const [formData, setFormData] = useState({
         nama_lengkap: data?.nama_lengkap || '',
         nip_karyawan: data?.nip_karyawan || '',
@@ -66,4 +66,4 @@ const FormEdit = ({ data, onCancel, isAdmin }) => {
     );
 };
 
-export default FormEdit;
+export default EditPage;

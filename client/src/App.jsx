@@ -14,6 +14,7 @@ import InformasiPage from './pages/InformasiPage'
 import AboutPage from './pages/AboutPage'
 import KaryawanPage from './pages/KaryawanPage'
 import TambahData from './pages/TambahData'
+import EditPage from './pages/EditPage'
 // store
 import { store } from './store'
 
