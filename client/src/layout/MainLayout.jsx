@@ -1,11 +1,12 @@
 import React from 'react'
 import Navbar from '../components/Navbar';
 import { Outlet } from 'react-router-dom'
+import Sidebar from '../components/Sidebar';
 const MainLayout = () => {
     return (
         <>
             {/* <Header /> */}
-            <Navbar />
+            <Sidebar />
             {/* {isPageLoading ? (
                 <Loading key="loading" />
             ) : ( */}

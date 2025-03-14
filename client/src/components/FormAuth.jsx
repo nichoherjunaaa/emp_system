@@ -4,6 +4,12 @@ import { GiGraduateCap } from "react-icons/gi";
 import Logo from "../assets/logo/usd.png";
 
 const FormAuth = () => {
+
+    const handleLogin = () => {
+        console.log("Login Berhasil");
+
+    };
+
     return (
         <div className="relative flex justify-center items-center min-h-screen bg-[url('./assets/background/usd-bg.jpg')] bg-cover bg-center p-4">
             {/* Overlay Transparan */}
@@ -11,9 +17,6 @@ const FormAuth = () => {
 
             {/* Card dengan responsivitas */}
             <div className="relative w-full max-w-5xl h-auto md:h-[80vh] grid grid-cols-1 md:grid-cols-2 rounded-3xl shadow-lg overflow-hidden bg-white">
-
-                
-
                 {/* Bagian Kiri (Putih) */}
                 <div className="flex flex-col items-center mt-5 bg-white p-8 md:p-12 justify-start h-full">
                     <img src={Logo} alt="USD Logo" className="w-40 md:w-56 self-center" />
@@ -33,7 +36,7 @@ const FormAuth = () => {
                     </div>
                     <FormInput label="Username" name="username" type="text" />
                     <FormInput label="Password" name="password" type="password" />
-                    <button className="bg-blue-600 w-full rounded-full btn p-6 border-none text-lg">Masuk</button>
+                    <button className="bg-blue-600 w-full rounded-full btn p-6 border-none text-lg" onClick={handleLogin}>Masuk</button>
                 </div>
             </div>
         </div>
