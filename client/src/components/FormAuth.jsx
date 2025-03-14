@@ -34,7 +34,7 @@ const FormAuth = () => {
                         <GiGraduateCap className="w-12 h-12 md:w-14 md:h-14 text-white" />
                         <h1 className="font-semibold text-2xl md:text-4xl text-white">SIA USD</h1>
                     </div>
-                    <FormInput label="Username" name="username" type="text" />
+                    <FormInput label="NIM" name="nim" type="text" />
                     <FormInput label="Password" name="password" type="password" />
                     <button className="bg-blue-600 w-full rounded-full btn p-6 border-none text-lg" onClick={handleLogin}>Masuk</button>
                 </div>

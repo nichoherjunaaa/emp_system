@@ -2,7 +2,6 @@ import React from 'react';
 
 const FormInput = ({label, name, type, defaultValue }) => {
     return (
-        
         <label className="form-control w-full">
             <input 
                 type={type} 

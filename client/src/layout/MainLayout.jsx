@@ -6,15 +6,18 @@ const MainLayout = () => {
     return (
         <>
             {/* <Header /> */}
-            <Sidebar />
-            {/* {isPageLoading ? (
+            <div className="flex min-h-screen">
+
+                <Sidebar />
+                {/* {isPageLoading ? (
                 <Loading key="loading" />
             ) : ( */}
-                <main className="mx-auto max-w-6xl px-8 py-20 min-h-[80vh]">
+                <main className="flex flex-col flex-1 gap-[30px] p-[30px] ml-[50px]">
                     <Outlet />
                 </main>
-            {/* )} */}
-            {/* <Footer /> */}
+                {/* )} */}
+                {/* <Footer /> */}
+            </div>
         </>
     )
 }
